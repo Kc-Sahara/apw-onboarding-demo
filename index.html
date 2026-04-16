@@ -1,0 +1,1288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=1440" />
+<title>AutoPilot Wizard · Onboarding SOP Demo</title>
+<style>
+  :root{
+    --bg:#0B0B12;
+    --surface:#17172A;
+    --surface-2:#1E1E32;
+    --surface-3:#242440;
+    --line:#2A2A42;
+    --line-2:#33335A;
+    --ink:#F5F5FF;
+    --ink-2:#CFCFE8;
+    --ink-3:#8B8BAE;
+    --ink-4:#5C5C7A;
+    --rose:#E91E63;
+    --rose-soft:#F06292;
+    --rose-bg:rgba(233,30,99,.12);
+    --rose-line:rgba(233,30,99,.35);
+    --green:#22C55E;
+    --green-bg:rgba(34,197,94,.12);
+    --green-line:rgba(34,197,94,.35);
+    --red:#F87171;
+    --red-bg:rgba(248,113,113,.10);
+    --red-line:rgba(248,113,113,.35);
+    --amber:#F59E0B;
+    --amber-bg:rgba(245,158,11,.10);
+    --amber-line:rgba(245,158,11,.35);
+    --violet:#A78BFA;
+    --violet-bg:rgba(167,139,250,.12);
+    --violet-line:rgba(167,139,250,.30);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#050508;color:var(--ink);font-family:Inter,"SF Pro Text",system-ui,-apple-system,Segoe UI,sans-serif;-webkit-font-smoothing:antialiased}
+  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:28px 24px 56px;gap:18px}
+  .header{width:1440px;max-width:100%;display:flex;align-items:center;justify-content:space-between;color:var(--ink-3);font-size:13px;letter-spacing:.02em}
+  .header .title{color:var(--ink);font-weight:600;font-size:14px;letter-spacing:.02em}
+  .header .meta{display:flex;gap:14px;align-items:center}
+  .header .dot{width:6px;height:6px;border-radius:999px;background:var(--rose);box-shadow:0 0 14px var(--rose)}
+
+  .frame{
+    width:1440px;height:900px;max-width:100%;
+    background:var(--bg);border-radius:16px;overflow:hidden;position:relative;
+    box-shadow:0 30px 80px rgba(0,0,0,.6),0 0 0 1px rgba(255,255,255,.04);
+    display:grid;grid-template-columns:240px 1fr;
+  }
+
+  .side{
+    background:#0E0E1A;border-right:1px solid var(--line);
+    display:flex;flex-direction:column;padding:22px 18px 18px;
+  }
+  .side .brand{display:flex;flex-direction:column;gap:2px;margin-bottom:28px}
+  .side .brand .logo{font-weight:800;font-size:17px;letter-spacing:.01em;
+    background:linear-gradient(180deg,#FFB5C8 0%,#E91E63 100%);
+    -webkit-background-clip:text;background-clip:text;color:transparent;}
+  .side .brand .sub{font-size:10px;color:var(--ink-4);letter-spacing:.22em}
+  .side .nav{display:flex;flex-direction:column;gap:4px}
+  .side .nav-item{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;
+    color:var(--ink-3);font-size:13px;font-weight:500;cursor:default;user-select:none;
+    border:1px solid transparent;
+  }
+  .side .nav-item svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .side .nav-item.active{
+    color:var(--ink);background:linear-gradient(90deg,rgba(233,30,99,.22),rgba(233,30,99,.06));
+    border-color:rgba(233,30,99,.28);box-shadow:inset 0 0 12px rgba(233,30,99,.12);
+  }
+  .side .spacer{flex:1}
+  .side .divider{height:1px;background:var(--line);margin:14px 0}
+  .side .foot{display:flex;flex-direction:column;gap:10px}
+  .side .foot .foot-item{display:flex;gap:10px;align-items:center;color:var(--ink-3);font-size:12px}
+  .side .foot .foot-item svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6}
+  .side .version{color:var(--ink-4);font-size:10px;letter-spacing:.22em;margin-top:12px}
+
+  .main{display:flex;flex-direction:column;min-width:0}
+  .topbar{
+    height:60px;flex-shrink:0;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;justify-content:space-between;padding:0 28px;
+    background:linear-gradient(180deg,#0F0F1D 0%,#0B0B12 100%);
+  }
+  .topbar .applogo{font-size:15px;font-weight:700;
+    background:linear-gradient(90deg,#FFE7A8,#FFB5C8 45%,#E91E63);
+    -webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.01em;
+  }
+  .user-chip{display:flex;align-items:center;gap:12px}
+  .user-chip .name{font-size:13px;font-weight:600;color:var(--ink)}
+  .user-chip .org{font-size:11px;color:var(--ink-3);letter-spacing:.06em}
+  .user-chip .avatar{
+    width:36px;height:36px;border-radius:50%;
+    background:linear-gradient(135deg,#3b3b5e,#232345);
+    border:1px solid var(--line-2);display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:13px;color:#DCDCFF;
+  }
+
+  .body-pad{padding:22px 40px 24px;flex:1;overflow:hidden;position:relative}
+
+  .crumb{font-size:12px;color:var(--ink-3);letter-spacing:.06em;display:flex;gap:8px;align-items:center;text-transform:uppercase}
+  .crumb .active{color:var(--rose)}
+  .crumb .sep{opacity:.5}
+
+  .hero{display:flex;justify-content:space-between;align-items:flex-start;margin-top:14px}
+  .hero h1{margin:6px 0 6px;font-size:32px;font-weight:800;letter-spacing:-.01em}
+  .hero p{margin:0;color:var(--ink-3);font-size:14px;max-width:720px}
+  .stage-tag{color:var(--rose);font-size:11px;letter-spacing:.22em;font-weight:700}
+
+  .stepper{display:flex;align-items:center;gap:10px;margin:22px 0 20px}
+  .stepper .node{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--surface);border:1px solid var(--line-2);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-3);font-size:12px;font-weight:700;flex-shrink:0;
+    transition:all .35s ease;
+  }
+  .stepper .line{flex:0 0 56px;height:2px;background:var(--line);border-radius:2px;transition:background .4s}
+  .stepper .node.done{background:var(--green-bg);border-color:var(--green-line);color:var(--green)}
+  .stepper .node.active{
+    background:var(--rose);border-color:var(--rose);color:#fff;
+    box-shadow:0 0 0 4px rgba(233,30,99,.15),0 0 24px rgba(233,30,99,.45);
+  }
+  .stepper .line.done{background:linear-gradient(90deg,var(--green) 0%,var(--green) 100%)}
+  .stepper .line.active{background:linear-gradient(90deg,var(--green) 0%,var(--rose) 100%)}
+
+  .step-view{display:none}
+  .step-view.on{display:block}
+
+  .card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;
+    padding:22px;position:relative;
+  }
+
+  .form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:18px}
+  .form-row label{font-size:12px;color:var(--ink-3);letter-spacing:.04em;font-weight:600}
+  .input{
+    background:#0F0F1F;border:1px solid var(--line-2);border-radius:10px;
+    height:46px;padding:0 14px;display:flex;align-items:center;gap:10px;color:var(--ink);
+    font-size:14px;transition:border-color .25s,box-shadow .25s;
+  }
+  .input.focus{border-color:var(--rose-line);box-shadow:0 0 0 3px rgba(233,30,99,.12)}
+  .input .ph{color:var(--ink-4)}
+  .input .caret{width:1.5px;height:18px;background:var(--rose);display:inline-block;animation:caret 1s steps(1) infinite;margin-left:2px}
+  @keyframes caret{50%{opacity:0}}
+  .input .eye{margin-left:auto;color:var(--ink-4);display:flex}
+  .input svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7}
+
+  .lock-line{display:flex;align-items:center;gap:8px;color:var(--green);font-size:12px;margin-top:6px;opacity:0;transition:opacity .5s}
+  .lock-line.on{opacity:1}
+  .lock-line svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.8}
+
+  .actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px}
+  .btn{
+    height:44px;padding:0 20px;border-radius:999px;font-weight:600;font-size:13.5px;
+    display:inline-flex;align-items:center;gap:8px;border:none;cursor:default;user-select:none;
+    letter-spacing:.01em;
+  }
+  .btn.ghost{background:transparent;color:var(--ink-3)}
+  .btn.secondary{background:#24243E;color:var(--ink-2)}
+  .btn.primary{
+    background:var(--rose);color:#fff;box-shadow:0 0 28px rgba(233,30,99,.45);
+  }
+  .btn.primary.disabled{background:#3a2030;color:#8a6a79;box-shadow:none}
+
+  .phase-a{display:flex;flex-direction:column;align-items:center;gap:14px;padding:40px 24px}
+  .spinner{
+    width:64px;height:64px;border-radius:50%;
+    border:3px solid rgba(233,30,99,.18);border-top-color:var(--rose);
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .check-circle{
+    width:64px;height:64px;border-radius:50%;
+    background:var(--green-bg);border:1px solid var(--green-line);
+    display:flex;align-items:center;justify-content:center;color:var(--green);
+  }
+  .check-circle svg{width:30px;height:30px;stroke:currentColor;fill:none;stroke-width:3}
+  .phase-a h3{margin:6px 0 4px;font-size:20px;font-weight:700}
+  .phase-a p{margin:0;color:var(--ink-3);font-size:13px;text-align:center;max-width:460px}
+  .ip-line{display:flex;gap:14px;color:var(--ink-3);font-size:12px;margin-top:4px;font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+  .ip-line span{display:inline-flex;align-items:center;gap:6px}
+  .ip-line b{color:var(--ink-2);font-weight:500}
+
+  .viewers{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:4px}
+  .viewer{
+    background:var(--surface-2);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    display:flex;flex-direction:column;height:360px;
+  }
+  .viewer .chrome{
+    height:34px;background:#0E0E1A;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;padding:0 12px;
+  }
+  .viewer .dots{display:flex;gap:5px}
+  .viewer .dots i{width:9px;height:9px;border-radius:50%;background:#3a3a5a;display:block}
+  .viewer .dots i.r{background:#EF4444}
+  .viewer .dots i.y{background:#F59E0B}
+  .viewer .dots i.g{background:#22C55E}
+  .viewer .url{
+    flex:1;background:#060610;border:1px solid var(--line);border-radius:6px;
+    height:20px;padding:0 8px;display:flex;align-items:center;gap:6px;color:var(--ink-3);font-size:10.5px;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .viewer .status-pill{
+    font-size:10px;color:var(--ink-3);padding:2px 8px;border-radius:999px;
+    background:#121224;border:1px solid var(--line-2);letter-spacing:.04em;
+  }
+  .viewer .status-pill.live{color:var(--rose);border-color:var(--rose-line);background:var(--rose-bg)}
+  .viewer .status-pill.ok{color:var(--green);border-color:var(--green-line);background:var(--green-bg)}
+  .viewer .stage{
+    flex:1;background:#0A0A14;padding:14px;display:flex;flex-direction:column;gap:8px;overflow:hidden;position:relative;
+  }
+  .viewer h4{margin:0 0 2px;font-size:13px;color:var(--ink-2);font-weight:600}
+  .viewer .field{
+    background:#0F0F1F;border:1px solid var(--line-2);border-radius:6px;padding:7px 9px;
+    font-size:11.5px;color:var(--ink);min-height:28px;display:flex;align-items:center;
+    font-family:ui-monospace,Menlo,monospace;
+  }
+  .viewer .field.empty{color:var(--ink-4)}
+  .viewer .flabel{font-size:10px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+  .viewer .btn-fake{
+    margin-top:4px;background:var(--rose);color:#fff;border-radius:6px;padding:7px 10px;
+    font-size:11.5px;font-weight:600;text-align:center;
+  }
+  .viewer .btn-fake.off{background:#28283e;color:var(--ink-3)}
+  .viewer .captcha{
+    border:1px dashed var(--line-2);border-radius:6px;padding:7px 9px;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--ink-2);
+    background:#0E0E1A;
+  }
+  .viewer .captcha.solved{border-color:var(--green-line);color:var(--green);background:var(--green-bg);border-style:solid}
+  .viewer .sms{
+    background:#0E0E1A;border:1px solid var(--line-2);border-radius:6px;padding:7px 9px;
+    display:flex;gap:4px;align-items:center;
+  }
+  .viewer .sms .slot{
+    width:22px;height:26px;border:1px solid var(--line-2);border-radius:4px;
+    display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--ink-2);
+    font-family:ui-monospace,Menlo,monospace;background:#060610;
+  }
+  .viewer .success-stamp{
+    margin-top:auto;padding:7px 9px;border-radius:6px;background:var(--green-bg);
+    border:1px solid var(--green-line);color:var(--green);font-size:11.5px;
+    display:flex;align-items:center;gap:6px;
+  }
+
+  .terminal{
+    margin-top:14px;background:#05050B;border:1px solid var(--line);border-radius:10px;
+    padding:12px 14px;height:110px;overflow:hidden;font-family:ui-monospace,Menlo,monospace;
+    font-size:11.5px;color:#A7F0C2;line-height:1.55;
+  }
+  .terminal .l{opacity:0;transform:translateY(4px);transition:all .25s}
+  .terminal .l.on{opacity:1;transform:translateY(0)}
+  .terminal .l.warn{color:var(--amber)}
+  .terminal .l.info{color:#8EB8FF}
+  .terminal .l .t{color:var(--ink-4);margin-right:8px}
+
+  .banner{
+    display:flex;align-items:flex-start;gap:10px;padding:12px 14px;border-radius:10px;font-size:13px;
+    border:1px solid;
+  }
+  .banner.info{background:var(--violet-bg);border-color:var(--violet-line);color:#DCD0FF}
+  .banner.warn{background:var(--amber-bg);border-color:var(--amber-line);color:#FFDEA1}
+  .banner.ok{background:var(--green-bg);border-color:var(--green-line);color:#B9F2C9}
+  .banner.err{background:var(--red-bg);border-color:var(--red-line);color:#FFC9C9}
+  .banner svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;flex-shrink:0;margin-top:2px}
+  .banner b{font-weight:600;color:#fff}
+
+  .sync-list{display:flex;flex-direction:column;gap:10px}
+  .sync-row{
+    display:grid;grid-template-columns:44px 1fr 170px 130px;gap:16px;align-items:center;
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 18px;
+  }
+  .sync-row .ico{
+    width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+    background:#1D1D35;border:1px solid var(--line-2);color:var(--ink-2);
+  }
+  .sync-row .ico svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .sync-row .meta .n{font-size:14px;font-weight:600}
+  .sync-row .meta .s{font-size:12px;color:var(--ink-3);margin-top:2px}
+  .sync-row .val{font-size:13px;color:var(--ink-2);font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+  .sync-row .val .bar{
+    height:4px;background:#22223E;border-radius:2px;margin-top:8px;overflow:hidden;position:relative;width:160px;margin-left:auto;
+  }
+  .sync-row .val .bar i{display:block;height:100%;background:linear-gradient(90deg,var(--rose-soft),var(--rose));width:0;transition:width .6s}
+  .pill{
+    font-size:11px;padding:5px 10px;border-radius:999px;letter-spacing:.04em;font-weight:600;
+    display:inline-flex;align-items:center;gap:6px;justify-self:end;border:1px solid;
+  }
+  .pill.pending{color:var(--ink-3);background:#1A1A2E;border-color:var(--line-2)}
+  .pill.syncing{color:var(--rose);background:var(--rose-bg);border-color:var(--rose-line)}
+  .pill.done{color:var(--green);background:var(--green-bg);border-color:var(--green-line)}
+  .pill .dot{width:6px;height:6px;border-radius:50%;background:currentColor}
+  .pill.syncing .dot{animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.35}50%{opacity:1}}
+
+  .accordion{display:flex;flex-direction:column;gap:10px}
+  .acc{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;
+    transition:border-color .3s,box-shadow .3s;
+  }
+  .acc.active{border-color:var(--rose-line);box-shadow:0 0 0 1px rgba(233,30,99,.18),0 0 30px rgba(233,30,99,.10)}
+  .acc-head{
+    display:flex;align-items:center;justify-content:space-between;padding:12px 18px;cursor:default;
+  }
+  .acc-head .lhs{display:flex;align-items:center;gap:10px}
+  .acc-head .num{
+    width:24px;height:24px;border-radius:50%;background:#23233C;color:var(--ink-3);
+    font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;
+  }
+  .acc.active .acc-head .num{background:var(--rose);color:#fff}
+  .acc.done .acc-head .num{background:var(--green);color:#fff}
+  .acc-head h3{margin:0;font-size:14px;font-weight:700;letter-spacing:.01em}
+  .acc-head .pillet{font-size:10px;padding:3px 9px;border-radius:999px;letter-spacing:.12em;font-weight:700;border:1px solid}
+  .acc-head .pillet.idle{color:var(--ink-4);border-color:var(--line-2);background:transparent}
+  .acc-head .pillet.act{color:var(--rose);border-color:var(--rose-line);background:var(--rose-bg)}
+  .acc-head .pillet.cmp{color:var(--green);border-color:var(--green-line);background:var(--green-bg)}
+  .acc-body{
+    max-height:0;overflow:hidden;padding:0 18px;border-top:1px solid transparent;
+    transition:max-height .45s ease,padding .3s ease,border-color .3s;
+  }
+  .acc.open .acc-body{max-height:380px;padding:14px 18px 18px;border-top-color:var(--line)}
+
+  .kv-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px 20px}
+  .kv{display:flex;flex-direction:column;gap:3px}
+  .kv .k{font-size:10.5px;color:var(--ink-3);letter-spacing:.06em;text-transform:uppercase}
+  .kv .v{font-size:13px;color:var(--ink)}
+  .tone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .tone{
+    padding:12px;border-radius:10px;background:#121226;border:1px solid var(--line-2);
+    display:flex;flex-direction:column;gap:4px;
+  }
+  .tone.sel{border-color:var(--rose-line);background:var(--rose-bg);box-shadow:0 0 18px rgba(233,30,99,.14)}
+  .tone .n{font-size:13px;font-weight:700}
+  .tone .d{font-size:11.5px;color:var(--ink-3)}
+
+  .seg{display:inline-flex;background:#121226;border:1px solid var(--line-2);border-radius:999px;padding:3px;gap:2px}
+  .seg .s{padding:6px 14px;border-radius:999px;font-size:11.5px;color:var(--ink-3);cursor:default}
+  .seg .s.on{background:var(--rose);color:#fff;box-shadow:0 0 12px rgba(233,30,99,.4)}
+
+  .chip-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font-size:11px;padding:5px 10px;border-radius:999px;background:#121226;border:1px solid var(--line-2);color:var(--ink-2)}
+  .chip.neg{color:#FFC9C9;border-color:var(--red-line);background:var(--red-bg)}
+
+  .sched-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:6px}
+  .sch{background:#121226;border:1px solid var(--line-2);border-radius:8px;padding:8px 4px;text-align:center}
+  .sch .d{font-size:10px;color:var(--ink-3);letter-spacing:.08em}
+  .sch .h{font-size:11px;color:var(--ink);margin-top:4px;font-family:ui-monospace,Menlo,monospace}
+  .sch.off{opacity:.5}
+  .sch.on{border-color:var(--rose-line);background:var(--rose-bg)}
+  .sch.on .h{color:var(--rose)}
+
+  .tag-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 22px}
+  .tag-head{display:grid;grid-template-columns:1fr 260px 60px;gap:16px;padding:4px 6px 12px;color:var(--ink-3);font-size:10.5px;letter-spacing:.08em}
+  .tag-row{display:grid;grid-template-columns:1fr 260px 60px;gap:16px;align-items:center;margin-bottom:10px}
+  .tag-row .name{
+    background:#0F0F1F;border:1px solid var(--line-2);border-radius:999px;
+    padding:10px 16px;font-family:ui-monospace,Menlo,monospace;font-size:13px;
+  }
+  .tag-row .cond{
+    background:var(--violet-bg);border:1px solid var(--violet-line);border-radius:999px;
+    padding:10px 16px;font-family:ui-monospace,Menlo,monospace;font-size:13px;color:#DCD0FF;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .tag-row .del{color:var(--ink-4);text-align:center;font-size:15px;opacity:.6}
+  .tag-row.new{animation:fade-in .5s ease-out both}
+  @keyframes fade-in{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
+  .add-tag{
+    display:inline-flex;gap:6px;padding:10px 16px;border-radius:999px;
+    border:1px solid var(--line-2);background:transparent;color:var(--ink-2);font-size:13px;margin-top:6px;
+  }
+
+  .checks{display:flex;flex-direction:column;gap:6px;margin-top:10px}
+  .chk{display:flex;gap:8px;align-items:flex-start;font-size:12.5px;padding:4px 0}
+  .chk .ico{width:18px;height:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;font-weight:700}
+  .chk.fail .ico{color:var(--red)}
+  .chk.pass .ico{color:var(--green)}
+  .chk .txt b{color:#fff;font-weight:600}
+  .chk.fail .txt{color:#FFC9C9}
+  .chk.pass .txt{color:#B9F2C9}
+
+  .complete{display:flex;flex-direction:column;align-items:center;gap:14px;padding:18px 0 10px}
+  .complete h1{font-size:44px;font-weight:800;margin:4px 0 0;text-align:center;
+    background:linear-gradient(180deg,#fff,#FFB5C8);-webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .complete .subtitle{color:var(--ink-3);font-size:15px;margin:0}
+  .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;width:100%;margin-top:10px}
+  .stat{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .stat .sico{
+    width:36px;height:36px;border-radius:9px;background:#1D1D35;
+    display:flex;align-items:center;justify-content:center;color:var(--ink-2);
+  }
+  .stat .sico.ok{background:var(--green-bg);color:var(--green)}
+  .stat .sico svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8}
+  .stat .t{font-size:13.5px;font-weight:700}
+  .stat .l{font-size:11px;color:var(--ink-3);margin-top:1px}
+
+  .not-active{
+    width:100%;background:var(--rose-bg);border:1px solid var(--rose-line);border-radius:12px;padding:14px 18px;
+    display:flex;gap:12px;align-items:flex-start;margin-top:6px;
+  }
+  .not-active svg{width:18px;height:18px;stroke:var(--rose);fill:none;stroke-width:1.8;flex-shrink:0;margin-top:2px}
+  .not-active .t{color:var(--rose);font-weight:700;font-size:13.5px}
+  .not-active .d{color:var(--ink-2);font-size:12.5px;margin-top:2px}
+
+  .cta-row{display:flex;gap:12px;margin-top:8px}
+
+  .controls{
+    width:1440px;max-width:100%;background:var(--surface);border:1px solid var(--line);
+    border-radius:12px;padding:12px 16px;display:flex;align-items:center;gap:14px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .controls .tbtn{
+    height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line-2);
+    background:#121226;color:var(--ink-2);font-size:12.5px;display:inline-flex;align-items:center;gap:6px;
+    cursor:pointer;font-family:inherit;
+  }
+  .controls .tbtn.primary{background:var(--rose);color:#fff;border-color:transparent;box-shadow:0 0 16px rgba(233,30,99,.4)}
+  .chips{display:flex;gap:6px;margin-left:auto}
+  .chips .c{
+    padding:6px 10px;border-radius:999px;border:1px solid var(--line-2);background:#121226;
+    color:var(--ink-3);font-size:11.5px;cursor:pointer;font-family:inherit;
+  }
+  .chips .c.on{border-color:var(--rose-line);background:var(--rose-bg);color:var(--rose)}
+
+  .progress{flex:1;height:4px;background:#22223E;border-radius:2px;overflow:hidden;margin:0 4px}
+  .progress i{display:block;height:100%;background:linear-gradient(90deg,var(--rose-soft),var(--rose));width:0%;transition:width .3s linear}
+  .time{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+
+  .footer-note{width:1440px;max-width:100%;color:var(--ink-4);font-size:11.5px;text-align:center;letter-spacing:.04em}
+
+  .fade-in{animation:fadeIn .35s ease both}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+  .hidden{display:none!important}
+  .muted{color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="title">APW · Onboarding SOP Demo</div>
+  <div class="meta">
+    <span class="dot"></span>
+    <span>V1 · 5-step happy path · Clickable prototype</span>
+  </div>
+</div>
+
+<!-- ==================== DEMO FRAME ==================== -->
+<div class="frame">
+
+  <!-- SIDEBAR -->
+  <aside class="side">
+    <div class="brand">
+      <div class="logo">✨ AutoPilot Wizard</div>
+      <div class="sub">AI DASHBOARD</div>
+    </div>
+    <nav class="nav">
+      <div class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg>Dashboard</div>
+      <div class="nav-item active"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c.8-3.3 3.2-5.2 6-5.2s5.2 1.9 6 5.2"/><circle cx="17" cy="9" r="2.4"/><path d="M15 20c.4-2.4 1.7-3.9 4-3.9"/></svg>My Creators</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg>Accounting</div>
+      <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1 1.56V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 9 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15 1.7 1.7 0 0 0 3 14H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34H9A1.7 1.7 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9v.09"/></svg>Settings</div>
+    </nav>
+    <div class="spacer"></div>
+    <div class="divider"></div>
+    <div class="foot">
+      <div class="foot-item"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M9.1 9.1a3 3 0 0 1 5.8 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="currentColor"/></svg>Support</div>
+    </div>
+    <div class="version">VERSION 1.0.1</div>
+  </aside>
+
+  <!-- MAIN -->
+  <section class="main">
+    <div class="topbar">
+      <div class="applogo">✨ AutoPilot Wizard</div>
+      <div class="user-chip">
+        <div style="text-align:right">
+          <div class="name">Sean Ren</div>
+          <div class="org">UNRULY AGENCY</div>
+        </div>
+        <div class="avatar">SR</div>
+      </div>
+    </div>
+
+    <div class="body-pad">
+      <div class="crumb">
+        <span>My Creators</span>
+        <span class="sep">›</span>
+        <span class="active">Add New Creator</span>
+      </div>
+
+      <div class="hero">
+        <div>
+          <h1 id="stepTitle">Creator Credentials</h1>
+          <p id="stepSubtitle">Let's start by securing access to Sienna Vale's OnlyFans account.</p>
+        </div>
+        <div class="stage-tag" id="stageTag">CONFIGURATION STAGE 1/5</div>
+      </div>
+
+      <div class="stepper" id="stepper">
+        <div class="node active" data-n="1">1</div>
+        <div class="line" data-ln="1-2"></div>
+        <div class="node" data-n="2">2</div>
+        <div class="line" data-ln="2-3"></div>
+        <div class="node" data-n="3">3</div>
+        <div class="line" data-ln="3-4"></div>
+        <div class="node" data-n="4">4</div>
+        <div class="line" data-ln="4-5"></div>
+        <div class="node" data-n="5">5</div>
+      </div>
+
+      <!-- =================== STEP 1 =================== -->
+      <div class="step-view on" id="view1">
+        <div class="card" style="max-width:640px">
+          <div class="form-row">
+            <label>Display Name</label>
+            <div class="input" id="f1"><span id="f1v"></span><span class="caret" id="c1"></span></div>
+          </div>
+          <div class="form-row">
+            <label>OnlyFans Username or Email</label>
+            <div class="input" id="f2"><span id="f2v"></span><span class="caret hidden" id="c2"></span></div>
+          </div>
+          <div class="form-row" style="margin-bottom:8px">
+            <label>OnlyFans Password</label>
+            <div class="input" id="f3">
+              <span id="f3v"></span><span class="caret hidden" id="c3"></span>
+              <span class="eye"><svg viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></span>
+            </div>
+          </div>
+          <div class="lock-line" id="lockLine">
+            <svg viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+            Credentials encrypted and stored securely.
+          </div>
+          <div class="actions">
+            <button class="btn ghost">Cancel</button>
+            <button class="btn primary disabled" id="s1cta">Continue to Account Linking →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== STEP 2 =================== -->
+      <div class="step-view" id="view2">
+        <!-- Phase A -->
+        <div class="card" id="phaseA">
+          <div class="phase-a">
+            <div id="phaseAvisual"><div class="spinner"></div></div>
+            <h3 id="phaseAtitle">Allocating Proxy…</h3>
+            <p id="phaseAdesc">Assigning a dedicated residential proxy for secure access to OnlyFans.</p>
+            <div class="ip-line hidden" id="ipLine">
+              <span><b>IP:</b> 45.74.212.88</span>
+              <span><b>Location:</b> Los Angeles, CA</span>
+              <span><b>Type:</b> Residential</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phase B -->
+        <div id="phaseB" class="hidden">
+          <div class="viewers">
+            <div class="viewer">
+              <div class="chrome">
+                <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+                <div class="url">🔒 onlyfans.com/login</div>
+                <div class="status-pill live" id="feStatus">LIVE</div>
+              </div>
+              <div class="stage">
+                <h4>Frontend Link · OnlyFans</h4>
+                <div class="flabel">Email</div>
+                <div class="field empty" id="feEmail"></div>
+                <div class="flabel">Password</div>
+                <div class="field empty" id="fePass"></div>
+                <div class="captcha hidden" id="feCap"><span>⚡ hCaptcha · verify you're human</span></div>
+                <div class="sms hidden" id="feSms">
+                  <div class="flabel" style="margin-right:6px">SMS</div>
+                  <div class="slot" id="s-0"></div>
+                  <div class="slot" id="s-1"></div>
+                  <div class="slot" id="s-2"></div>
+                  <div class="slot" id="s-3"></div>
+                  <div class="slot" id="s-4"></div>
+                  <div class="slot" id="s-5"></div>
+                </div>
+                <div class="btn-fake off" id="feBtn">Sign in</div>
+                <div class="success-stamp hidden" id="feOk">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Frontend session established
+                </div>
+              </div>
+            </div>
+
+            <div class="viewer">
+              <div class="chrome">
+                <div class="dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+                <div class="url">🔒 creatorai.app/console/login</div>
+                <div class="status-pill live" id="beStatus">LIVE</div>
+              </div>
+              <div class="stage">
+                <h4>Backend Link · Creator Console</h4>
+                <div class="flabel">Creator Handle</div>
+                <div class="field empty" id="beEmail"></div>
+                <div class="flabel">API Token</div>
+                <div class="field empty" id="bePass"></div>
+                <div class="captcha hidden" id="beCap"><span>⚡ Verifying handshake…</span></div>
+                <div class="btn-fake off" id="beBtn">Authorize</div>
+                <div class="success-stamp hidden" id="beOk">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Backend session established
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="terminal" id="term">
+            <div class="l" data-k="t1"><span class="t">15:42:03</span>&gt; Proxy allocated · 45.74.212.88 (US-West)</div>
+            <div class="l info" data-k="t2"><span class="t">15:42:06</span>&gt; Opening dual WebViewer session…</div>
+            <div class="l" data-k="t3"><span class="t">15:42:09</span>&gt; Frontend: auto-filling credentials</div>
+            <div class="l warn" data-k="t4"><span class="t">15:42:13</span>&gt; CAPTCHA detected · solving via vision service</div>
+            <div class="l" data-k="t5"><span class="t">15:42:18</span>&gt; CAPTCHA cleared · SMS challenge received</div>
+            <div class="l" data-k="t6"><span class="t">15:42:22</span>&gt; SMS code relayed from paired device · 438209</div>
+            <div class="l" data-k="t7"><span class="t">15:42:24</span>&gt; Frontend session OK · token stored</div>
+            <div class="l" data-k="t8"><span class="t">15:42:27</span>&gt; Backend handshake OK · scopes: read, write, fan</div>
+          </div>
+
+          <div class="banner info" id="capBanner" style="margin-top:14px">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r=".5" fill="currentColor"/></svg>
+            <div><b>Action handled automatically.</b> <span class="muted">AutoPilot solves the CAPTCHA and relays the SMS code inline — no operator handoff required.</span></div>
+          </div>
+          <div class="banner ok hidden" id="okBanner" style="margin-top:14px">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <div><b>Both Linked Successfully.</b> <span class="muted">Frontend and Backend sessions are live and healthy.</span></div>
+          </div>
+
+          <div class="actions">
+            <button class="btn ghost">Cancel</button>
+            <button class="btn primary disabled" id="s2cta">Continue to Data Sync →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================== STEP 3 =================== -->
+      <div class="step-view" id="view3">
+        <div class="sync-list">
+          <div class="sync-row" data-task="media">
+            <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5L5 21"/></svg></div>
+            <div class="meta">
+              <div class="n">Vault Media</div>
+              <div class="s">Photos, videos, and audio from the creator's vault.</div>
+            </div>
+            <div class="val"><span id="vMedia">0 items</span><div class="bar"><i data-bar="media"></i></div></div>
+            <div class="pill pending" data-pill="media"><span class="dot"></span>Pending</div>
+          </div>
+
+          <div class="sync-row" data-task="profile">
+            <div class="ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4.2-6 8-6s7 2 8 6"/></svg></div>
+            <div class="meta">
+              <div class="n">Creator Profile</div>
+              <div class="s">Bio, pricing, subscription tiers, and public persona.</div>
+            </div>
+            <div class="val"><span id="vProfile">—</span><div class="bar"><i data-bar="profile"></i></div></div>
+            <div class="pill pending" data-pill="profile"><span class="dot"></span>Pending</div>
+          </div>
+
+          <div class="sync-row" data-task="tx">
+            <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/><path d="M7 15h4"/></svg></div>
+            <div class="meta">
+              <div class="n">Transaction History</div>
+              <div class="s">PPV purchases, tips, and subscription revenue.</div>
+            </div>
+            <div class="val"><span id="vTx">$0</span><div class="bar"><i data-bar="tx"></i></div></div>
+            <div class="pill pending" data-pill="tx"><span class="dot"></span>Pending</div>
+          </div>
+
+          <div class="sync-row" data-task="fans">
+            <div class="ico"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.2"/><rect x="14" y="3" width="7" height="7" rx="1.2"/><rect x="3" y="14" width="7" height="7" rx="1.2"/><rect x="14" y="14" width="7" height="7" rx="1.2"/></svg></div>
+            <div class="meta">
+              <div class="n">Fan Gallery</div>
+              <div class="s">Active subscriber list with spend and activity signals.</div>
+            </div>
+            <div class="val"><span id="vFans">0 fans</span><div class="bar"><i data-bar="fans"></i></div></div>
+            <div class="pill pending" data-pill="fans"><span class="dot"></span>Pending</div>
+          </div>
+
+          <div class="sync-row" data-task="chat">
+            <div class="ico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+            <div class="meta">
+              <div class="n">Chat Log</div>
+              <div class="s">Last 3 months of conversations · last 6 months of fans with spend &gt; $500.</div>
+            </div>
+            <div class="val"><span id="vChat">0 chats</span><div class="bar"><i data-bar="chat"></i></div></div>
+            <div class="pill pending" data-pill="chat"><span class="dot"></span>Pending</div>
+          </div>
+        </div>
+
+        <div class="banner info" style="margin-top:18px">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r=".5" fill="currentColor"/></svg>
+          <div><b>Smart prioritization.</b> <span class="muted">AutoPilot prioritizes the most recent 3 months of chats and the last 6 months of fans whose total spend exceeds $500 — Sienna's highest-value relationships are indexed first.</span></div>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost">Cancel</button>
+          <button class="btn primary disabled" id="s3cta">Continue to AI Configuration →</button>
+        </div>
+      </div>
+
+      <!-- =================== STEP 4 =================== -->
+      <div class="step-view" id="view4">
+        <div class="accordion" id="accordion">
+          <div class="acc" id="a1">
+            <div class="acc-head">
+              <div class="lhs"><div class="num">1</div><h3>Creator Basics</h3></div>
+              <div class="pillet idle">IDLE</div>
+            </div>
+            <div class="acc-body">
+              <div class="kv-grid">
+                <div class="kv"><div class="k">Display Name</div><div class="v">Sienna Vale</div></div>
+                <div class="kv"><div class="k">Nickname</div><div class="v">Si</div></div>
+                <div class="kv"><div class="k">Timezone</div><div class="v">PST · Los Angeles</div></div>
+                <div class="kv"><div class="k">Persona Age Bracket</div><div class="v">22–26</div></div>
+                <div class="kv" style="grid-column:1 / span 2"><div class="k">Creator Context</div><div class="v">OF creator since 2022, ex-dancer. Flirty + sweet voice. Avoids politics and religion. Travels often.</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc" id="a2">
+            <div class="acc-head">
+              <div class="lhs"><div class="num">2</div><h3>Tone</h3></div>
+              <div class="pillet idle">IDLE</div>
+            </div>
+            <div class="acc-body">
+              <div class="tone-grid">
+                <div class="tone" id="tGFE"><div class="n">Girlfriend Experience</div><div class="d">Warm, attentive, emotionally present.</div></div>
+                <div class="tone" id="tHorny"><div class="n">Horny &amp; Flirty</div><div class="d">Playful, suggestive, high-energy.</div></div>
+                <div class="tone" id="tBratty"><div class="n">Bratty Tease</div><div class="d">Teasing, confident, slightly dominant.</div></div>
+              </div>
+              <div class="kv-grid" style="margin-top:14px">
+                <div class="kv"><div class="k">Primary Language</div><div class="v">English</div></div>
+                <div class="kv"><div class="k">Additional Languages</div><div class="v">Spanish</div></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc" id="a3">
+            <div class="acc-head">
+              <div class="lhs"><div class="num">3</div><h3>Boundaries &amp; Services</h3></div>
+              <div class="pillet idle">IDLE</div>
+            </div>
+            <div class="acc-body">
+              <div class="kv"><div class="k">Explicitness Level</div></div>
+              <div class="seg" style="margin-top:6px">
+                <div class="s" id="expPG">PG</div>
+                <div class="s" id="expPG13">PG-13</div>
+                <div class="s" id="expX">X</div>
+              </div>
+              <div class="kv" style="margin-top:14px"><div class="k">Hard Limits</div></div>
+              <div class="chip-wrap">
+                <div class="chip neg">No Minors</div>
+                <div class="chip neg">No Incest</div>
+                <div class="chip neg">No Bestiality</div>
+                <div class="chip neg">No Real Names</div>
+                <div class="chip neg">No In-Person Meetups</div>
+                <div class="chip neg">No Doxxing</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="acc" id="a4">
+            <div class="acc-head">
+              <div class="lhs"><div class="num">4</div><h3>AI Coverage</h3></div>
+              <div class="pillet idle">IDLE</div>
+            </div>
+            <div class="acc-body">
+              <div class="kv"><div class="k">Weekly Schedule</div></div>
+              <div class="sched-grid">
+                <div class="sch on"><div class="d">MON</div><div class="h">10–22</div></div>
+                <div class="sch on"><div class="d">TUE</div><div class="h">10–22</div></div>
+                <div class="sch on"><div class="d">WED</div><div class="h">10–22</div></div>
+                <div class="sch on"><div class="d">THU</div><div class="h">10–22</div></div>
+                <div class="sch on"><div class="d">FRI</div><div class="h">10–22</div></div>
+                <div class="sch on"><div class="d">SAT</div><div class="h">12–23</div></div>
+                <div class="sch off"><div class="d">SUN</div><div class="h">OFF</div></div>
+              </div>
+              <div class="kv-grid" style="margin-top:14px">
+                <div class="kv"><div class="k">After-Hours Policy</div><div class="v">Auto-respond with soft delay (5–20 min)</div></div>
+                <div class="kv"><div class="k">Who to Handle</div><div class="v">Subscribers + VIP fans · skip unverified</div></div>
+                <div class="kv"><div class="k">Outreach</div><div class="v">Birthday messages · Re-engagement (14-day idle)</div></div>
+                <div class="kv"><div class="k">Stop Handling When</div><div class="v">Total spend exceeds <b style="color:#fff">$500</b></div></div>
+                <div class="kv" style="grid-column:1 / span 2"><div class="k">Send to Human</div><div class="v">Payment disputes · Verbal abuse · Legal threats</div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost">Cancel</button>
+          <button class="btn primary disabled" id="s4cta">Save &amp; Complete AI Setup →</button>
+        </div>
+      </div>
+
+      <!-- =================== STEP 5 =================== -->
+      <div class="step-view" id="view5">
+        <div class="tag-card">
+          <div class="tag-head">
+            <div>TAG NAME</div>
+            <div>CONDITION</div>
+            <div style="text-align:center">ACTION</div>
+          </div>
+          <div id="tagRows"></div>
+          <button class="add-tag">+ Add Tag</button>
+        </div>
+
+        <div class="banner err" id="valFail" style="margin-top:16px;flex-direction:column;align-items:stretch;gap:0">
+          <div style="display:flex;gap:10px;align-items:center">
+            <svg viewBox="0 0 24 24" style="margin-top:0"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+            <b>Validation Failed — 3 issues found</b>
+          </div>
+          <div class="checks">
+            <div class="chk fail"><div class="ico">✕</div><div class="txt"><b>Stop-handling threshold ($500) not covered.</b> No tag targets fans approaching the $500 spend boundary set in AI Coverage.</div></div>
+            <div class="chk fail"><div class="ico">✕</div><div class="txt"><b>Coverage gap from $0 to $500.</b> No tag for low-spend fans ($0–$200) and no tag between $200 and $500.</div></div>
+            <div class="chk fail"><div class="ico">✕</div><div class="txt"><b>Minimum 10 scripts not met.</b> You've registered 3 tags — aim for 10+ (20+ recommended).</div></div>
+          </div>
+        </div>
+
+        <div class="banner ok hidden" id="valOk" style="margin-top:16px;flex-direction:column;align-items:stretch;gap:0">
+          <div style="display:flex;gap:10px;align-items:center">
+            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            <b>All checks passed — Scripts Bundling ready</b>
+          </div>
+          <div class="checks">
+            <div class="chk pass"><div class="ico">✓</div><div class="txt">Stop-handling threshold covered by <b>vip_scripts</b> (&gt;=500).</div></div>
+            <div class="chk pass"><div class="ico">✓</div><div class="txt">Full spend coverage from $0 to threshold — no gaps.</div></div>
+            <div class="chk pass"><div class="ico">✓</div><div class="txt">24 scripts registered across 6 tags.</div></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn ghost">Cancel</button>
+          <button class="btn primary disabled" id="s5cta">Validate &amp; Complete ✓</button>
+        </div>
+      </div>
+
+      <!-- =================== STEP 6 COMPLETE =================== -->
+      <div class="step-view" id="view6">
+        <div class="complete">
+          <h1>Onboarding Complete!</h1>
+          <p class="subtitle">Sienna Vale is fully onboarded and ready for AutoPilot.</p>
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="sico ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div><div class="t">Account Linked</div><div class="l">Frontend + Backend</div></div>
+            </div>
+            <div class="stat">
+              <div class="sico"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="m21 17-5-5L5 21"/></svg></div>
+              <div><div class="t">1,247 Media Items</div><div class="l">Synced to Vault</div></div>
+            </div>
+            <div class="stat">
+              <div class="sico"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H8l-5 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              <div><div class="t">3,421 Chats Indexed</div><div class="l">Across 142 VIP fans</div></div>
+            </div>
+            <div class="stat">
+              <div class="sico"><svg viewBox="0 0 24 24"><path d="M20.59 13.41 13.42 20.58a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg></div>
+              <div><div class="t">24 Scripts Bundled</div><div class="l">Across 6 tags</div></div>
+            </div>
+          </div>
+          <div class="not-active">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="13"/><circle cx="12" cy="16" r=".5" fill="currentColor"/></svg>
+            <div>
+              <div class="t">AutoPilot is Not Yet Active</div>
+              <div class="d">Onboarding is complete, but AutoPilot has not been turned on. Activate it manually from the creator's detail page when you're ready.</div>
+            </div>
+          </div>
+          <div class="cta-row">
+            <button class="btn primary">Go to Sienna Vale's Page</button>
+            <button class="btn secondary">Back to My Creators</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<!-- ==================== CONTROLS ==================== -->
+<div class="controls">
+  <button class="tbtn primary" id="btnPlay">❚❚ Pause</button>
+  <button class="tbtn" id="btnReplay">↺ Replay</button>
+  <div class="progress"><i id="prog"></i></div>
+  <span class="time" id="clock">0:00 / 3:50</span>
+  <div class="chips" id="jumps">
+    <button class="c on" data-jump="1">1 · Credentials</button>
+    <button class="c" data-jump="2">2 · Linking</button>
+    <button class="c" data-jump="3">3 · Data Sync</button>
+    <button class="c" data-jump="4">4 · AI Config</button>
+    <button class="c" data-jump="5">5 · Scripts</button>
+    <button class="c" data-jump="6">6 · Complete</button>
+  </div>
+</div>
+
+<div class="footer-note">Clickable prototype · APW V1 onboarding · Protagonist Sienna Vale · Agency Unruly · Presented by Sean Ren</div>
+
+<script>
+  /* ==========================================================
+     Timeline engine — each step runs a series of scheduled ops
+     via setTimeout. Pause clears handles. Replay/jump restarts.
+  ========================================================== */
+
+  const stepMeta = [
+    null,
+    { title:"Creator Credentials",    sub:"Let's start by securing access to Sienna Vale's OnlyFans account.",  dur:13000, tag:"CONFIGURATION STAGE 1/5" },
+    { title:"Account Linking",        sub:"Connecting to OnlyFans via dedicated proxy.",                        dur:35000, tag:"CONFIGURATION STAGE 2/5" },
+    { title:"Data Sync",              sub:"Syncing historical data so AutoPilot can learn Sienna's voice.",     dur:33000, tag:"CONFIGURATION STAGE 3/5" },
+    { title:"AI Configuration",       sub:"Define Sienna's personality, boundaries, and coverage rules.",       dur:56000, tag:"CONFIGURATION STAGE 4/5" },
+    { title:"Scripts Bundling",       sub:"Register the script tags AutoPilot will use for this creator.",      dur:26000, tag:"CONFIGURATION STAGE 5/5" },
+    { title:"Onboarding Complete!",   sub:"Sienna Vale is fully onboarded and ready for AutoPilot.",            dur:14000, tag:"STAGE COMPLETE" },
+  ];
+
+  let currentStep = 1;
+  let playing = true;
+  let wallClock = 0;
+  let lastTick = 0;
+  const handles = [];
+
+  const $ = sel => document.querySelector(sel);
+  const $$ = sel => Array.from(document.querySelectorAll(sel));
+
+  function schedule(t, fn){ handles.push(setTimeout(fn, t)); }
+  function clearHandles(){ handles.forEach(clearTimeout); handles.length = 0; }
+
+  function showStep(n){
+    currentStep = n;
+    $$(".step-view").forEach(v => v.classList.remove("on"));
+    document.getElementById("view"+n).classList.add("on");
+
+    const m = stepMeta[n] || stepMeta[6];
+    $("#stepTitle").textContent = m.title;
+    $("#stepSubtitle").textContent = m.sub;
+    $("#stageTag").textContent = m.tag;
+
+    $$(".stepper .node").forEach(node => {
+      const idx = parseInt(node.dataset.n);
+      node.classList.remove("active","done");
+      if(n === 6){
+        if(idx <= 5) node.classList.add("done");
+      } else {
+        if(idx < n) node.classList.add("done");
+        if(idx === n) node.classList.add("active");
+      }
+    });
+    $$(".stepper .line").forEach(ln => {
+      const [a,b] = ln.dataset.ln.split("-").map(Number);
+      ln.classList.remove("active","done");
+      if(b <= n) ln.classList.add("done");
+      else if(a < n) ln.classList.add("active");
+    });
+
+    $$("#jumps .c").forEach(c => c.classList.remove("on"));
+    const jump = document.querySelector(`#jumps .c[data-jump="${n}"]`);
+    if(jump) jump.classList.add("on");
+  }
+
+  /* ============== STEP 1 — Credentials ============== */
+  function runStep1(){
+    const f1 = $("#f1v"), f2 = $("#f2v"), f3 = $("#f3v");
+    const c1 = $("#c1"), c2 = $("#c2"), c3 = $("#c3");
+    const b1 = $("#f1"), b2 = $("#f2"), b3 = $("#f3");
+
+    f1.textContent=""; f2.textContent=""; f3.textContent="";
+    c1.classList.remove("hidden"); c2.classList.add("hidden"); c3.classList.add("hidden");
+    b1.classList.add("focus"); b2.classList.remove("focus"); b3.classList.remove("focus");
+    $("#lockLine").classList.remove("on");
+    $("#s1cta").classList.add("disabled");
+
+    typeInto(f1, "Sienna Vale", 600, 85);
+    schedule(2000, ()=>{ c1.classList.add("hidden"); b1.classList.remove("focus"); b2.classList.add("focus"); c2.classList.remove("hidden"); });
+    typeInto(f2, "sienna@siennavale.com", 2200, 55);
+    schedule(4600, ()=>{ c2.classList.add("hidden"); b2.classList.remove("focus"); b3.classList.add("focus"); c3.classList.remove("hidden"); });
+    typeInto(f3, "••••••••••••", 4800, 95);
+    schedule(6500, ()=>{ c3.classList.add("hidden"); b3.classList.remove("focus"); $("#lockLine").classList.add("on"); });
+    schedule(8000, ()=>{ $("#s1cta").classList.remove("disabled"); });
+    schedule(12000, ()=>{ if(playing && currentStep===1) goToStep(2); });
+  }
+  function typeInto(el, text, startT, perChar){
+    for(let i=0;i<=text.length;i++){
+      schedule(startT + i*perChar, ()=>{ el.textContent = text.slice(0,i); });
+    }
+  }
+
+  /* ============== STEP 2 — Account Linking ============== */
+  function runStep2(){
+    $("#phaseA").classList.remove("hidden");
+    $("#phaseB").classList.add("hidden");
+    $("#phaseAvisual").innerHTML = '<div class="spinner"></div>';
+    $("#phaseAtitle").textContent = "Allocating Proxy…";
+    $("#phaseAdesc").textContent = "Assigning a dedicated residential proxy for secure access to OnlyFans.";
+    $("#ipLine").classList.add("hidden");
+
+    $$("#term .l").forEach(l => l.classList.remove("on"));
+    ["feCap","feSms","feOk","beCap","beOk","okBanner"].forEach(id => $("#"+id).classList.add("hidden"));
+    $("#capBanner").classList.remove("hidden");
+    $("#feBtn").classList.add("off"); $("#feBtn").textContent = "Sign in";
+    $("#beBtn").classList.add("off"); $("#beBtn").textContent = "Authorize";
+    $("#feEmail").classList.add("empty"); $("#feEmail").textContent = "";
+    $("#fePass").classList.add("empty"); $("#fePass").textContent = "";
+    $("#beEmail").classList.add("empty"); $("#beEmail").textContent = "";
+    $("#bePass").classList.add("empty"); $("#bePass").textContent = "";
+    $("#feStatus").className = "status-pill live"; $("#feStatus").textContent = "LIVE";
+    $("#beStatus").className = "status-pill live"; $("#beStatus").textContent = "LIVE";
+    $("#feCap").classList.remove("solved");
+    $("#feCap").innerHTML = '<span>⚡ hCaptcha · verify you\'re human</span>';
+    for(let i=0;i<6;i++) $("#s-"+i).textContent = "";
+    $("#s2cta").classList.add("disabled");
+
+    // Phase A
+    schedule(3200, ()=>{
+      $("#phaseAvisual").innerHTML = '<div class="check-circle"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>';
+      $("#phaseAtitle").textContent = "Proxy Allocated";
+      $("#phaseAdesc").textContent = "Dedicated residential proxy is live.";
+      $("#ipLine").classList.remove("hidden");
+      termOn("t1");
+    });
+
+    // Phase B
+    schedule(5500, ()=>{
+      $("#phaseA").classList.add("hidden");
+      $("#phaseB").classList.remove("hidden");
+      $("#phaseB").classList.add("fade-in");
+      termOn("t2");
+    });
+    schedule(6800, ()=>{
+      termOn("t3");
+      $("#feEmail").classList.remove("empty");
+      typeChar("#feEmail", "sienna@siennavale.com", 40);
+    });
+    schedule(8000, ()=>{
+      $("#beEmail").classList.remove("empty");
+      typeChar("#beEmail", "sienna_vale", 60);
+    });
+    schedule(9400, ()=>{
+      $("#fePass").classList.remove("empty");
+      typeChar("#fePass", "••••••••••••", 70);
+    });
+    schedule(10400, ()=>{
+      $("#bePass").classList.remove("empty");
+      typeChar("#bePass", "•••••••••••••••••", 55);
+    });
+    // CAPTCHA
+    schedule(12500, ()=>{ $("#feCap").classList.remove("hidden"); termOn("t4"); });
+    schedule(15500, ()=>{
+      $("#feCap").classList.add("solved");
+      $("#feCap").innerHTML = '<span>✓ CAPTCHA solved automatically</span>';
+      termOn("t5");
+    });
+    // SMS
+    schedule(17500, ()=>{
+      $("#feSms").classList.remove("hidden");
+      const code = "438209";
+      for(let i=0;i<code.length;i++){
+        schedule(300*i, (function(i){ return ()=>{ $("#s-"+i).textContent = code[i]; }; })(i));
+      }
+      termOn("t6");
+    });
+    schedule(20500, ()=>{
+      $("#feBtn").classList.remove("off"); $("#feBtn").textContent = "Signing in…";
+      $("#beCap").classList.remove("hidden");
+      $("#beBtn").classList.remove("off"); $("#beBtn").textContent = "Authorizing…";
+    });
+    schedule(23000, ()=>{
+      $("#feOk").classList.remove("hidden");
+      $("#feStatus").className = "status-pill ok"; $("#feStatus").textContent = "LINKED";
+      termOn("t7");
+    });
+    schedule(25000, ()=>{
+      $("#beOk").classList.remove("hidden");
+      $("#beStatus").className = "status-pill ok"; $("#beStatus").textContent = "LINKED";
+      $("#beCap").classList.add("hidden");
+      termOn("t8");
+    });
+    schedule(27000, ()=>{
+      $("#capBanner").classList.add("hidden");
+      $("#okBanner").classList.remove("hidden");
+      $("#s2cta").classList.remove("disabled");
+    });
+    schedule(33000, ()=>{ if(playing && currentStep===2) goToStep(3); });
+  }
+  function typeChar(sel, text, per){
+    const el = document.querySelector(sel);
+    for(let i=0;i<=text.length;i++){
+      schedule(i*per, (function(i){ return ()=>{ el.textContent = text.slice(0,i); }; })(i));
+    }
+  }
+  function termOn(key){
+    const el = document.querySelector(`#term .l[data-k="${key}"]`);
+    if(el) el.classList.add("on");
+  }
+
+  /* ============== STEP 3 — Data Sync ============== */
+  function runStep3(){
+    $$("[data-pill]").forEach(p => { p.className = "pill pending"; p.innerHTML='<span class="dot"></span>Pending'; });
+    $$("[data-bar]").forEach(b => b.style.width = "0%");
+    $("#vMedia").textContent="0 items";
+    $("#vProfile").textContent="—";
+    $("#vTx").textContent="$0";
+    $("#vFans").textContent="0 fans";
+    $("#vChat").textContent="0 chats";
+    $("#s3cta").classList.add("disabled");
+
+    const tasks = [
+      { key:"media",   start:800,  end:7000,  final:()=>$("#vMedia").textContent="1,247 items",    drip:s=>$("#vMedia").textContent = Math.round(1247*s) + " items" },
+      { key:"profile", start:1400, end:5000,  final:()=>$("#vProfile").textContent="Imported",     drip:()=>{} },
+      { key:"tx",      start:3500, end:11000, final:()=>$("#vTx").textContent="$45,231",           drip:s=>$("#vTx").textContent = "$" + Math.round(45231*s).toLocaleString() },
+      { key:"fans",    start:6000, end:15000, final:()=>$("#vFans").textContent="892 fans",        drip:s=>$("#vFans").textContent = Math.round(892*s) + " fans" },
+      { key:"chat",    start:8000, end:26000, final:()=>$("#vChat").textContent="3,421 chats · 142 VIP fans", drip:s=>$("#vChat").textContent = Math.round(3421*s).toLocaleString() + " chats" },
+    ];
+
+    tasks.forEach(t => {
+      schedule(t.start, ()=>{
+        const p = document.querySelector(`[data-pill="${t.key}"]`);
+        p.className = "pill syncing";
+        p.innerHTML = '<span class="dot"></span>Syncing…';
+      });
+      const steps = 10;
+      for(let s=1;s<=steps;s++){
+        schedule(t.start + (t.end - t.start) * s/steps, (function(t,s,steps){
+          return ()=>{
+            const bar = document.querySelector(`[data-bar="${t.key}"]`);
+            bar.style.width = (s*10)+"%";
+            t.drip(s/steps);
+          };
+        })(t,s,steps));
+      }
+      schedule(t.end, ()=>{
+        const p = document.querySelector(`[data-pill="${t.key}"]`);
+        p.className = "pill done";
+        p.innerHTML = '<span class="dot"></span>Completed';
+        t.final();
+      });
+    });
+
+    schedule(27000, ()=>$("#s3cta").classList.remove("disabled"));
+    schedule(31500, ()=>{ if(playing && currentStep===3) goToStep(4); });
+  }
+
+  /* ============== STEP 4 — AI Configuration ============== */
+  function runStep4(){
+    ["a1","a2","a3","a4"].forEach(id=>{
+      const el = document.getElementById(id);
+      el.classList.remove("open","active","done");
+      const p = el.querySelector(".pillet");
+      p.className = "pillet idle"; p.textContent = "IDLE";
+    });
+    ["tGFE","tHorny","tBratty"].forEach(id => $("#"+id).classList.remove("sel"));
+    ["expPG","expPG13","expX"].forEach(id => $("#"+id).classList.remove("on"));
+    $("#s4cta").classList.add("disabled");
+
+    const openAcc = (id, tOpen, tClose) => {
+      schedule(tOpen, ()=>{
+        const el = document.getElementById(id);
+        el.classList.add("active","open");
+        const p = el.querySelector(".pillet");
+        p.className = "pillet act"; p.textContent = "ACTIVE";
+      });
+      schedule(tClose, ()=>{
+        const el = document.getElementById(id);
+        el.classList.remove("active");
+        el.classList.add("done");
+        const p = el.querySelector(".pillet");
+        p.className = "pillet cmp"; p.textContent = "COMPLETED";
+      });
+    };
+
+    openAcc("a1", 500, 11500);
+    openAcc("a2", 12000, 22500);
+    schedule(15500, ()=>$("#tGFE").classList.add("sel"));
+    openAcc("a3", 23000, 34000);
+    schedule(27000, ()=>$("#expX").classList.add("on"));
+    openAcc("a4", 34500, 49500);
+
+    schedule(50000, ()=>$("#s4cta").classList.remove("disabled"));
+    schedule(54500, ()=>{ if(playing && currentStep===4) goToStep(5); });
+  }
+
+  /* ============== STEP 5 — Scripts Bundling ============== */
+  function runStep5(){
+    const rows = $("#tagRows");
+    rows.innerHTML = `
+      <div class="tag-row"><div class="name">starter_scripts</div><div class="cond"><span>ALL</span><span>▾</span></div><div class="del">🗑</div></div>
+      <div class="tag-row" data-role="vip-old"><div class="name">vip_scripts</div><div class="cond"><span>&gt;=400</span><span>▾</span></div><div class="del">🗑</div></div>
+      <div class="tag-row"><div class="name">mid_tier_upsell</div><div class="cond"><span>&gt;=200</span><span>▾</span></div><div class="del">🗑</div></div>`;
+    $("#valFail").classList.remove("hidden");
+    $("#valOk").classList.add("hidden");
+    $("#s5cta").classList.add("disabled");
+
+    // At 4s: fix vip threshold 400 → 500
+    schedule(4000, ()=>{
+      const row = rows.querySelector('[data-role="vip-old"]');
+      if(row){
+        row.querySelector(".cond").innerHTML = '<span>&gt;=500</span><span>▾</span>';
+        row.removeAttribute("data-role");
+      }
+    });
+    schedule(6500, ()=>{
+      const el = document.createElement("div");
+      el.className = "tag-row new";
+      el.innerHTML = '<div class="name">low_spend_nurture</div><div class="cond"><span>&gt;=0</span><span>▾</span></div><div class="del">🗑</div>';
+      rows.appendChild(el);
+    });
+    schedule(8500, ()=>{
+      const el = document.createElement("div");
+      el.className = "tag-row new";
+      el.innerHTML = '<div class="name">custom_ppv_push</div><div class="cond"><span>&gt;=100</span><span>▾</span></div><div class="del">🗑</div>';
+      rows.appendChild(el);
+    });
+    schedule(10500, ()=>{
+      const el = document.createElement("div");
+      el.className = "tag-row new";
+      el.innerHTML = '<div class="name">re_engage_14d</div><div class="cond"><span>&gt;=0</span><span>▾</span></div><div class="del">🗑</div>';
+      rows.appendChild(el);
+    });
+    schedule(13500, ()=>{
+      $("#valFail").classList.add("hidden");
+      $("#valOk").classList.remove("hidden");
+      $("#s5cta").classList.remove("disabled");
+    });
+    schedule(23500, ()=>{ if(playing && currentStep===5) goToStep(6); });
+  }
+
+  /* ============== STEP 6 — Complete ============== */
+  function runStep6(){
+    schedule(13000, ()=>{ if(playing && currentStep===6) goToStep(1); });
+  }
+
+  /* ============== Engine ============== */
+  function goToStep(n){
+    clearHandles();
+    if(n <= 1){ wallClock = 0; }
+    else { let w=0; for(let i=1;i<n;i++) w += stepMeta[i].dur; wallClock = w; }
+    showStep(n);
+    if(n===1) runStep1();
+    if(n===2) runStep2();
+    if(n===3) runStep3();
+    if(n===4) runStep4();
+    if(n===5) runStep5();
+    if(n===6) runStep6();
+    lastTick = performance.now();
+  }
+
+  function totalMs(){ return stepMeta.slice(1,7).reduce((a,b)=>a+b.dur,0); }
+  function fmt(ms){
+    const s = Math.max(0, Math.floor(ms/1000));
+    return Math.floor(s/60)+":"+String(s%60).padStart(2,"0");
+  }
+  function tick(now){
+    if(playing){
+      const dt = now - lastTick;
+      wallClock += dt;
+    }
+    lastTick = now;
+    const total = totalMs();
+    $("#prog").style.width = Math.min(100, (wallClock/total)*100) + "%";
+    $("#clock").textContent = fmt(wallClock) + " / " + fmt(total);
+    requestAnimationFrame(tick);
+  }
+
+  document.getElementById("btnPlay").addEventListener("click", ()=>{
+    playing = !playing;
+    document.getElementById("btnPlay").textContent = playing ? "❚❚ Pause" : "▶ Play";
+    if(playing){ goToStep(currentStep); }
+    else { clearHandles(); }
+  });
+  document.getElementById("btnReplay").addEventListener("click", ()=>{
+    playing = true;
+    document.getElementById("btnPlay").textContent = "❚❚ Pause";
+    wallClock = 0;
+    goToStep(1);
+  });
+  document.querySelectorAll("#jumps .c").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+      const n = parseInt(btn.dataset.jump);
+      playing = true;
+      document.getElementById("btnPlay").textContent = "❚❚ Pause";
+      goToStep(n);
+    });
+  });
+
+  goToStep(1);
+  requestAnimationFrame(tick);
+</script>
+
+</body>
+</html>
